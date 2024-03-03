@@ -1,0 +1,63 @@
+﻿FormatVersion: 7
+Name: "Particles 1"
+Script: "Particles"
+Multithreaded: No
+Config:
+  SpritePath:
+    Type: "System.String"
+    Value: "sb/c.png"
+    DisplayName: "Sprite Path"
+  StartTime:
+    Type: "System.Double"
+    Value: "118608"
+    DisplayName: "Start Time"
+  EndTime:
+    Type: "System.Double"
+    Value: "157792"
+    DisplayName: "End Time"
+  ParticleColor:
+    Type: "OpenTK.Graphics.Color4"
+    Value: "1,0.7763208,0.7763208,1"
+    DisplayName: "Particle Color"
+  ColorVariance:
+    Type: "System.Single"
+    Value: "0.6"
+    DisplayName: "Color Variance"
+  ParticleScale:
+    Type: "System.Double"
+    Value: "5"
+    DisplayName: "Particle Scale"
+  ParticleCount:
+    Type: "System.Int32"
+    Value: "100"
+    DisplayName: "Particle Count"
+  moveDistance:
+    Type: "System.Double"
+    Value: "200"
+    DisplayName: "move Distance"
+  movingDuration:
+    Type: "System.Double"
+    Value: "3000"
+    DisplayName: "moving Duration"
+  opacity:
+    Type: "System.Double"
+    Value: "0.2"
+  isAdditive:
+    Type: "System.Boolean"
+    Value: "True"
+    DisplayName: "is Additive"
+  isRotate:
+    Type: "System.Boolean"
+    Value: "False"
+    DisplayName: "is Rotate"
+  RandomSeed:
+    Type: "System.Int32"
+    Value: "124"
+    DisplayName: "Random Seed"
+    BeginsGroup: "Common"
+Layers:
+  a9bacc1253ef40dd820f33c656d1881f:
+    Name: ""
+    OsbLayer: Background
+    DiffSpecific: No
+    Visible: Yes

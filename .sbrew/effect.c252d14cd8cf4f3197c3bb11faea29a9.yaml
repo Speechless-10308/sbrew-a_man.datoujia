@@ -1,0 +1,26 @@
+﻿FormatVersion: 7
+Name: "Intro 1"
+Script: "Intro"
+Multithreaded: No
+Config:
+  RandomSeed:
+    Type: "System.Int32"
+    Value: "0"
+    DisplayName: "Random Seed"
+    BeginsGroup: "Common"
+Layers:
+  4f0a648a71ac4137992d72b66f6af77f:
+    Name: "Intro"
+    OsbLayer: Background
+    DiffSpecific: No
+    Visible: Yes
+  1be59b9f03814acc90527a3a2ed885c1:
+    Name: "TEXT"
+    OsbLayer: Background
+    DiffSpecific: No
+    Visible: Yes
+  9f2cd03841d04f92b2dca48179c4c4a8:
+    Name: "IntroOverlay"
+    OsbLayer: Background
+    DiffSpecific: No
+    Visible: Yes

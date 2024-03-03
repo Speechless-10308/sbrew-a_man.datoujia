@@ -1,0 +1,6 @@
+{
+  "omnisharp.useModernNet": false,
+  "editor.cursorSmoothCaretAnimation": "on",
+  "editor.cursorBlinking": "smooth",
+  "editor.cursorStyle": "line"
+}

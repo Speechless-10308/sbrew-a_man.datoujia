@@ -1,0 +1,57 @@
+﻿FormatVersion: 7
+Name: "Chapter 1"
+Script: "Chapter"
+Multithreaded: No
+Config:
+  OutputPath:
+    Type: "System.String"
+    Value: "time"
+    DisplayName: "Output Path"
+  MinColor:
+    Type: "OpenTK.Graphics.Color4"
+    Value: "1,1,1,1"
+    DisplayName: "Min Color"
+  MaxColor:
+    Type: "OpenTK.Graphics.Color4"
+    Value: "0.887486,0.4121583,0.4121583,1"
+    DisplayName: "Max Color"
+  ScriptColor:
+    Type: "OpenTK.Graphics.Color4"
+    Value: "0.9964463,1,0.4244238,1"
+    DisplayName: "Script Color"
+  RandomSeed:
+    Type: "System.Int32"
+    Value: "0"
+    DisplayName: "Random Seed"
+    BeginsGroup: "Common"
+Layers:
+  32440ffe66684fb08a0baf253f2dcd9b:
+    Name: "Chapter-Text"
+    OsbLayer: Background
+    DiffSpecific: No
+    Visible: Yes
+  b6295042af2441fbbccd7b4b532116c8:
+    Name: "Chapter-Back"
+    OsbLayer: Background
+    DiffSpecific: No
+    Visible: Yes
+  10ca78a44cbc4bba96ee3ed9e4472c32:
+    Name: "Chapter-Girl"
+    OsbLayer: Background
+    DiffSpecific: No
+    Visible: Yes
+  5cc58d6b2d104a22ac6415d11f91c06f:
+    Name: "Chapter-Progress"
+    OsbLayer: Background
+    DiffSpecific: No
+    Visible: Yes
+  e45e6caf923a44499e5db249253a5baa:
+    Name: "Chapter"
+    OsbLayer: Background
+    DiffSpecific: No
+    Visible: Yes
+  9f8d8dec9dd14b0e8b2f5301ad710505:
+    Name: "Chapter-Text2"
+    OsbLayer: Background
+    DiffSpecific: No
+    Visible: Yes
