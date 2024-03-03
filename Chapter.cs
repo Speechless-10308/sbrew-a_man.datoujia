@@ -1,6 +1,7 @@
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
+using StorybrewCommon.Animations;
 using StorybrewCommon.Mapset;
 using StorybrewCommon.Scripting;
 using StorybrewCommon.Storyboarding;
@@ -10,6 +11,7 @@ using StorybrewCommon.Util;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -59,7 +61,7 @@ namespace StorybrewScripts
 
             GenerateSongInfo(208679, 539640, 500, new Vector2(albumPosition.X + albumPixel / 2 + 30, albumPosition.Y - albumPixel/2 + 10f), 50, 60f, new FontGenerator[] { font2, font1, scriptFont }, new float[] { 0.3f, 0.3f, 0.5f }, "Song Title", "A Man Who \n Existed in Parallel");
 
-            GenerateSongInfo(208679, 539640, 500, new Vector2(albumPosition.X + albumPixel / 2 + 30, albumPosition.Y + albumPixel/2 - 40), 30, 30f, new FontGenerator[] { font2, font1, scriptFont }, new float[] { 0.3f, 0.3f, 0.5f }, "Chapter 2", "The First Velocity");
+            GenerateSongInfoOverlay(208679, 539640, 500, new Vector2(albumPosition.X + albumPixel / 2 + 30, albumPosition.Y + albumPixel/2 - 40), 30, 30f, new FontGenerator[] { font2, font1, scriptFont }, new float[] { 0.3f, 0.3f, 0.5f }, "Chapter 2", "The First Velocity");
 
             /// chapter 2
             bg.Fade(OsbEasing.OutSine, 548885, 548885 + 500, 0, 0.9);
@@ -75,18 +77,114 @@ namespace StorybrewScripts
 
             GenerateSongInfo(548885, 945846, 500, new Vector2(albumPosition.X + albumPixel / 2 + 30, albumPosition.Y - albumPixel/2 + 10f), 50, 60f, new FontGenerator[] { font2, font1, scriptFont }, new float[] { 0.3f, 0.3f, 0.5f }, "Song Title", "A Man Who \n Existed in Parallel");
 
-            GenerateSongInfo(548885, 945846, 500, new Vector2(albumPosition.X + albumPixel / 2 + 30, albumPosition.Y + albumPixel/2 - 40), 30, 30f, new FontGenerator[] { font2, font1, scriptFont }, new float[] { 0.3f, 0.3f, 0.5f }, "Chapter 3", "Apparition of Solid");
+            GenerateSongInfoOverlay(548885, 945846, 500, new Vector2(albumPosition.X + albumPixel / 2 + 30, albumPosition.Y + albumPixel/2 - 40), 30, 30f, new FontGenerator[] { font2, font1, scriptFont }, new float[] { 0.3f, 0.3f, 0.5f }, "Chapter 3", "Apparition of Solid");
 
             /// chapter 3
             ProgressBar(945846, 1171447, new Vector2(320 - 90, 400), new Vector2(600, 20), MinColor, MaxColor, 500);
 
             GenerateSongInfo(945846, 1171447, 500, new Vector2(albumPosition.X + albumPixel / 2 + 30, albumPosition.Y - albumPixel/2 + 10f), 50, 60f, new FontGenerator[] { font2, font1, scriptFont }, new float[] { 0.3f, 0.3f, 0.5f }, "Song Title", "A Man Who \n Existed in Parallel");
 
-            GenerateSongInfo(945846, 1171447, 500, new Vector2(albumPosition.X + albumPixel / 2 + 30, albumPosition.Y + albumPixel/2 - 40), 30, 30f, new FontGenerator[] { font2, font1, scriptFont }, new float[] { 0.3f, 0.3f, 0.5f }, "Chapter 4", "Dream to the East");
+            GenerateSongInfoOverlay(945846, 1171447, 500, new Vector2(albumPosition.X + albumPixel / 2 + 30, albumPosition.Y + albumPixel/2 - 40), 30, 30f, new FontGenerator[] { font2, font1, scriptFont }, new float[] { 0.3f, 0.3f, 0.5f }, "Chapter 4", "Dream to the East");
 
 
 
         }
+
+        public void GenerateSongInfoOverlay(int startTime, int endTime, int duration, Vector2 titelPosition, float nameOffsetY, float scriptOffsetY, FontGenerator[] fonts, float[] scales, string title, string name)
+        {
+            var pxPath = "sb/p.png";
+
+            var textures = new List<FontTexture>{
+                fonts[0].GetTexture(title),
+                fonts[1].GetTexture(name),
+            };
+
+            var offsets = new List<Vector2>{
+                new Vector2(0, 0),
+                new Vector2(0, nameOffsetY),
+            };
+
+            var beatDuration = (int)Beatmap.GetTimingPointAt(startTime).BeatDuration;
+
+            int i = 0;
+            
+            foreach(var texture in textures)
+            {
+
+                ProcessTexture(GetLayer("Chapter-Text-Overlay"), texture, 50, startTime + duration, duration, startTime + beatDuration * 4, titelPosition + offsets[i], scales[i], OsbEasing.InExpo);
+                var bitmap = GetMapsetBitmap(texture.Path);
+
+                var sprite = GetLayer("Chapter-Text").CreateSprite(texture.Path, OsbOrigin.CentreLeft, titelPosition + offsets[i]);
+                sprite.Scale(startTime + beatDuration * 4, scales[i]);
+                sprite.Fade(startTime + beatDuration * 4, startTime + beatDuration * 4 + duration, 0, 1);
+                FlashFade(sprite, endTime - duration, (float)duration / 4, 4, 1, 0);
+                // Log($"sprite: {sprite.HasOverlappedCommands}");
+                var cursor1 = GetLayer("Chapter-Text-Overlay").CreateSprite(pxPath, OsbOrigin.Centre, titelPosition +  offsets[i]);
+                cursor1.ScaleVec(startTime, 2, bitmap.Height * scales[i]);
+                FlashIn(cursor1, startTime, (float)duration / 4, 4, 1, 1);
+                FlashFade(cursor1, startTime + duration*2, (float)duration / 4, 4, 1, 1);
+                cursor1.MoveX(OsbEasing.InExpo, startTime + duration, startTime + duration*2, titelPosition.X, titelPosition.X + bitmap.Width * scales[i]);
+
+                i++;
+            }
+
+            var script = GetLayer("Chapter-Text2-Overlay").CreateSprite(fonts[2].GetTexture(name).Path, OsbOrigin.CentreLeft, titelPosition + new Vector2(textures[1].BaseWidth*scales[1] / 10, scriptOffsetY));
+            script.Scale(startTime, scales[2]);
+            FlashIn(script, startTime, (float)duration / 4, 4, 0.5f, 1);
+            script.Fade(startTime + beatDuration * 4, startTime + beatDuration * 4 + duration, 0.5f, 0);
+            // Log($"script: {script.HasOverlappedCommands}");
+            
+            script.Color(startTime, ScriptColor);
+            script.Rotate(startTime, -Math.PI/48);
+
+            var script2 = GetLayer("Chapter-Text2").CreateSprite(fonts[2].GetTexture(name).Path, OsbOrigin.CentreLeft, titelPosition + new Vector2(textures[1].BaseWidth*scales[1] / 10, scriptOffsetY));
+            script2.Scale(startTime + beatDuration * 4, scales[2]);
+            script2.Fade(startTime + beatDuration * 4, startTime + beatDuration * 4 + duration, 0, 0.5f);
+            
+            script2.Color(startTime + beatDuration * 4, ScriptColor);
+            script2.Rotate(startTime + beatDuration * 4, -Math.PI/48);
+            FlashFade(script2, endTime - duration, (float)duration / 4, 4, 0.5f, 0);
+            // Log($"script2: {script2.HasOverlappedCommands}")
+        }
+
+        private void ProcessTexture(StoryboardLayer layer, FontTexture texture, int splitCount, int startTime, int duration, int endTime, Vector2 position, float scale, OsbEasing easing)
+        {
+            var image = Image.FromFile(Path.Combine(MapsetPath, texture.Path));
+            var splitWidth = image.Width / splitCount;
+
+            var dest_rect = new Rectangle(0, 0, splitWidth, image.Height);  
+
+            var x = position.X + splitWidth / 2 * scale;
+
+            int i = 0;
+
+            dest_rect.Y = 0;
+            while (dest_rect.X < image.Width)
+            {
+                Rectangle source_rect = new Rectangle(0, 0, splitWidth, image.Height);
+                var splitted = new Bitmap(splitWidth, image.Height);
+                var graphics = Graphics.FromImage(splitted);
+
+                var newPath = texture.Path.Split('.')[0] + '_' + i + '.' + texture.Path.Split('.')[1];
+                graphics.DrawImage(image, source_rect, dest_rect, GraphicsUnit.Pixel);
+                splitted.Save($"{MapsetPath}/{newPath}", ImageFormat.Png);
+                var current = (float)(i+1) / splitCount;
+                var progress = current == 0? 0 : 1 + 1d/10 * Math.Log(current, 2);
+                var start = startTime + progress * duration;
+                
+                var sprite = layer.CreateSprite(newPath, OsbOrigin.Centre, new Vector2(x, position.Y));
+                sprite.Scale(start, scale);
+                sprite.Fade(start, 1);
+                sprite.Fade(endTime, endTime+duration, 1, 0);
+
+                dest_rect.X += splitWidth;
+                x += splitWidth * scale;
+                i++;
+            }
+            image.Dispose();
+        }
+
+        
         public void GenerateSongInfo(int startTime, int endTime, int duration, Vector2 titelPosition, float nameOffsetY, float scriptOffsetY, FontGenerator[] fonts, float[] scales, string title, string name)
         {
             var pxPath = "sb/p.png";

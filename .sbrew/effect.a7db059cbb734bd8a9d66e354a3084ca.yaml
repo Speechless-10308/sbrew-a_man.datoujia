@@ -55,3 +55,13 @@ Layers:
     OsbLayer: Background
     DiffSpecific: No
     Visible: Yes
+  a0c67c25d8f24dba9da111812b4b4279:
+    Name: "Chapter-Text2-Overlay"
+    OsbLayer: Overlay
+    DiffSpecific: No
+    Visible: Yes
+  45fce4310c2a497c85f66a9152bbede4:
+    Name: "Chapter-Text-Overlay"
+    OsbLayer: Overlay
+    DiffSpecific: No
+    Visible: Yes
